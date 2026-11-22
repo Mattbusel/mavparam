@@ -1,29 +1,8 @@
-# mavparam: diff drone parameter files the way the autopilot stores them
+# mavparam
 
-[![crates.io](https://img.shields.io/crates/v/mavparam.svg)](https://crates.io/crates/mavparam)
-[![docs.rs](https://docs.rs/mavparam/badge.svg)](https://docs.rs/mavparam)
-[![CI](https://github.com/Mattbusel/mavparam/actions/workflows/ci.yml/badge.svg)](https://github.com/Mattbusel/mavparam/actions/workflows/ci.yml)
+**Two drone parameter files can look completely different and hold the exact same tune. This tells you which values actually changed.**
 
-**`0.1` and `0.100000001490116119` are the same parameter value. A text diff
-says they are not.**
-
-A MAVLink parameter is a 32-bit float on the wire (`PARAM_VALUE.param_value`)
-and ArduPilot stores it that way. Ground stations then write it to disk however
-they like: a `.param` file says `0.1`, older QGroundControl releases with 18
-decimals (`0.100000001490116119`), current QGroundControl as the shortest `%g`
-text (`3.6e+02`), MAVProxy `param save` as `%f`, six decimals, rounding
-anything smaller away. Compare those files as text, or as 64-bit doubles, and
-you get changes that are not changes. In a real BlueROV2 ArduSub 3.5.2 export
-from QGroundControl ([brov2-heavy-3_5_2.params](https://github.com/bluerobotics/bluerobotics.github.io/blob/master/downloads/brov2-heavy-3_5_2.params),
-604 parameters), 40 of the 171 float values parse to a different double than
-the same value written short.
-
-mavparam reads all three formats, compares every value as the f32 the vehicle
-holds, and writes each format back out without losing a bit. Here a real
-ArduCopter 4.6.3 QGroundControl export
-([x650-arducopter-4.6.params](https://github.com/JacopoPan/aerial-autonomy-stack/blob/main/start_here/docs/params/x650-arducopter-4.6.params),
-1,067 parameters), converted to a Mission Planner `.param`, is compared with a
-copy of the export with three values edited and one line deleted:
+A MAVLink parameter is a 32-bit float the way the autopilot stores it. Ground stations write that same float to disk however they like: `0.1`, `0.100000001490116119`, `3.6e+02`, or six-decimal `%f`. Compare those files as text, or as 64-bit doubles, and you get changes that are not changes. mavparam reads every format, compares each value as the f32 the vehicle actually holds, and writes any format back out without losing a bit.
 
 ```console
 $ mavparam convert x650.params before_update.param
@@ -37,11 +16,17 @@ $ mavparam diff before_update.param after_update.params --meta apm.pdef.json
 3 changed, 0 added, 1 removed
 ```
 
-The two sides are different formats. The diff matches them by name (and
-MAVLink component), finds no change in the 1,063 values that were not edited,
-and, with ArduPilot's published metadata, says which changes need a reboot and
-which leave the documented range. Exit code 0 means identical, 1 means
-different, so it drops into CI or a pre-flight script as is.
+Both sides above are different file formats holding 1,067 parameters. mavparam matches them by name and MAVLink component, reports nothing for the 1,063 values that were not edited, and, with ArduPilot's published metadata, flags which changes need a reboot and which leave the documented range. Exit code 0 means identical, 1 means different, so it drops straight into CI or a pre-flight script.
+
+**[Live demo](https://mattbusel.github.io/drone-demos/)**
+
+[![crates.io](https://img.shields.io/crates/v/mavparam.svg)](https://crates.io/crates/mavparam)
+[![downloads](https://img.shields.io/crates/d/mavparam.svg)](https://crates.io/crates/mavparam)
+[![docs.rs](https://docs.rs/mavparam/badge.svg)](https://docs.rs/mavparam)
+[![license](https://img.shields.io/crates/l/mavparam.svg)](#license)
+[![CI](https://github.com/Mattbusel/mavparam/actions/workflows/ci.yml/badge.svg)](https://github.com/Mattbusel/mavparam/actions/workflows/ci.yml)
+
+mavparam parses parameters as MAVLink stores them, not as text. Untyped and `REAL32` values compare as f32; integer-typed and `REAL64` values compare exactly. Every writer emits the shortest text that reads back to the same stored value, checked against 200,000 random f32 bit patterns in the test suite. It is `#![forbid(unsafe_code)]`, builds `no_std` for `thumbv7em-none-eabihf`, and reads Mission Planner and MAVProxy files by the same rules as pymavlink `mavparm.load`. Checked against a real BlueROV2 ArduSub 3.5.2 export of 604 parameters, 40 of the 171 float values parse to a different double than the same value written short: exactly the false changes a text diff reports and mavparam does not.
 
 ## What it reads
 

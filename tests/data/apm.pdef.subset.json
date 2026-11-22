@@ -1,0 +1,185 @@
+{
+  "ATC_": {
+    "ATC_RAT_RLL_P": {
+      "Description": "Roll axis rate controller P gain.  Corrects in proportion to the difference between the desired roll rate vs actual roll rate",
+      "DisplayName": "Roll axis rate controller P gain",
+      "Increment": "0.005",
+      "Range": {
+        "high": "0.35",
+        "low": "0.0"
+      },
+      "Units": "s/rad",
+      "User": "Standard",
+      "path": "AC_AttitudeControl_Heli"
+    }
+  },
+  "BRD_": {
+    "BRD_SAFETY_DEFLT": {
+      "Description": "This controls the default state of the safety switch at startup. When set to 1 the safety switch will start in the safe state (flashing) at boot. When set to zero the safety switch will start in the unsafe state (solid) at startup. Note that if a safety switch is fitted the user can still control the safety state after startup using the switch. The safety state can also be controlled in software using a MAVLink message.",
+      "DisplayName": "Sets default state of the safety switch",
+      "RebootRequired": "True",
+      "User": "Standard",
+      "Values": {
+        "0": "Disabled",
+        "1": "Enabled"
+      }
+    }
+  },
+  "Copter": {
+    "ACRO_RP_RATE": {
+      "Description": "Acro mode maximum roll and pitch rate.  Higher values mean faster rate of rotation",
+      "DisplayName": "Acro Roll and Pitch Rate",
+      "Range": {
+        "high": "1080",
+        "low": "1"
+      },
+      "Units": "deg/s",
+      "User": "Standard"
+    },
+    "FORMAT_VERSION": {
+      "Description": "This value is incremented when changes are made to the eeprom format",
+      "DisplayName": "Eeprom format version number",
+      "User": "Advanced"
+    },
+    "FRAME_CLASS": {
+      "Description": "Controls major frame class for multicopter component",
+      "DisplayName": "Frame Class",
+      "RebootRequired": "True",
+      "User": "Standard",
+      "Values": {
+        "0": "Undefined",
+        "1": "Quad",
+        "10": "BiCopter",
+        "11": "Heli_Dual",
+        "12": "DodecaHexa",
+        "13": "HeliQuad",
+        "14": "Deca",
+        "15": "Scripting Matrix",
+        "16": "6DoF Scripting",
+        "17": "Dynamic Scripting Matrix",
+        "2": "Hexa",
+        "3": "Octa",
+        "4": "OctaQuad",
+        "5": "Y6",
+        "6": "Heli",
+        "7": "Tri",
+        "8": "SingleCopter",
+        "9": "CoaxCopter"
+      }
+    },
+    "LOG_BITMASK": {
+      "Bitmask": {
+        "0": "Fast Attitude",
+        "1": "Medium Attitude",
+        "10": "RC output",
+        "11": "Optical Flow",
+        "12": "PID",
+        "13": "Compass",
+        "15": "Camera",
+        "17": "Motors",
+        "18": "Fast IMU",
+        "19": "Raw IMU",
+        "2": "GPS",
+        "20": "Video Stabilization",
+        "21": "Fast harmonic notch logging",
+        "3": "System Performance",
+        "4": "Control Tuning",
+        "5": "Navigation Tuning",
+        "6": "RC input",
+        "7": "IMU",
+        "8": "Mission Commands",
+        "9": "Battery Monitor"
+      },
+      "Description": "Bitmap of what on-board log types to enable. This value is made up of the sum of each of the log types you want to be saved. It is usually best just to enable all basiclog types by setting this to 65535. Note that if you want to reduce log sizes you should consider using LOG_FILE_RATEMAX instead of disabling logging items with this parameter.",
+      "DisplayName": "Log bitmask",
+      "User": "Standard"
+    }
+  },
+  "INS": {
+    "INS_ACC_ID": {
+      "Description": "Accelerometer sensor ID, taking into account its type, bus and instance",
+      "DisplayName": "Accelerometer ID",
+      "ReadOnly": "True",
+      "User": "Advanced"
+    },
+    "INS_GYRO_FILTER": {
+      "Description": "Filter cutoff frequency for gyroscopes. This can be set to a lower value to try to cope with very high vibration levels in aircraft. A value of zero means no filtering (not recommended!)",
+      "DisplayName": "Gyro filter cutoff frequency",
+      "Range": {
+        "high": "256",
+        "low": "0"
+      },
+      "Units": "Hz",
+      "User": "Advanced"
+    }
+  },
+  "SERIAL": {
+    "SERIAL1_PROTOCOL": {
+      "Description": "Control what protocol to use on the Telem1 port. Note that the Frsky options require external converter hardware. See the wiki for details.",
+      "DisplayName": "Telem1 protocol selection",
+      "RebootRequired": "True",
+      "User": "Standard",
+      "Values": {
+        "-1": "None",
+        "1": "MAVLink1",
+        "10": "FrSky SPort Passthrough (OpenTX)",
+        "11": "Lidar360",
+        "13": "Beacon",
+        "14": "Volz servo out",
+        "15": "SBus servo out",
+        "16": "ESC Telemetry",
+        "17": "Devo Telemetry",
+        "18": "OpticalFlow",
+        "19": "RobotisServo",
+        "2": "MAVLink2",
+        "20": "NMEA Output",
+        "21": "WindVane",
+        "22": "SLCAN",
+        "23": "RCIN",
+        "24": "EFI Serial",
+        "25": "LTM",
+        "26": "RunCam",
+        "27": "HottTelem",
+        "28": "Scripting",
+        "29": "Crossfire VTX",
+        "3": "Frsky D",
+        "30": "Generator",
+        "31": "Winch",
+        "32": "MSP",
+        "33": "DJI FPV",
+        "34": "AirSpeed",
+        "35": "ADSB",
+        "36": "AHRS",
+        "37": "SmartAudio",
+        "38": "FETtecOneWire",
+        "39": "Torqeedo",
+        "4": "Frsky SPort",
+        "40": "AIS",
+        "41": "CoDevESC",
+        "42": "DisplayPort",
+        "43": "MAVLink High Latency",
+        "44": "IRC Tramp",
+        "45": "DDS XRCE",
+        "46": "IMUDATA",
+        "48": "PPP",
+        "49": "i-BUS Telemetry",
+        "5": "GPS",
+        "50": "IOMCU",
+        "7": "Alexmos Gimbal Serial",
+        "8": "Gimbal",
+        "9": "Rangefinder"
+      }
+    }
+  },
+  "STAT": {
+    "STAT_BOOTCNT": {
+      "Description": "Number of times board has been booted",
+      "DisplayName": "Boot Count",
+      "ReadOnly": "True",
+      "User": "Standard"
+    }
+  },
+  "json": {
+    "version": 0
+  }
+}

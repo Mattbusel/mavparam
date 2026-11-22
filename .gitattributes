@@ -1,0 +1,2 @@
+# Sample exports are kept byte for byte.
+tests/data/** -text
